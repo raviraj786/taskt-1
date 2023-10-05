@@ -1,6 +1,8 @@
 // src/components/Registration.js
 import React from 'react';
-
+// import GoogleAuth from './comonets/GoogleAuth';
+import { GoogleLogin } from '@react-oauth/google';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 import { useNavigate } from 'react-router-dom';
 import{ useState } from 'react';
 
@@ -8,6 +10,7 @@ import{ useState } from 'react';
 const LoginSrc = () => {
     const navigate = useNavigate();
     const handleClick = () => navigate('/Registration');
+    const handleClick2  = () => navigate('/home')
 
     const [formData, setFormData] = useState({
         number: '',
@@ -19,6 +22,8 @@ const LoginSrc = () => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
       };
+
+     
 
 
 
@@ -47,7 +52,21 @@ const LoginSrc = () => {
       };
 
 
-    
+      // const responseGoogle = (response) => {
+      //   if (response && response.profileObj) {
+      //     // Successful authentication
+      //     localStorage.setItem('user', JSON.stringify(response.profileObj));
+      //     navigate.push('/home');
+      //   } else {
+      //     // Handle authentication failure
+      //     console.error('Authentication failed');
+      //   }
+      // };
+
+
+
+
+ 
 
  
   return (
@@ -100,14 +119,43 @@ const LoginSrc = () => {
             </button>
           </div>
         </form>
+        <div>
+            <button
+              type="submit"
+              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            >
+            <GoogleOAuthProvider clientId='777409032024-34tupvncep21l277ve7ro172kn5ha767.apps.googleusercontent.com'>
+<GoogleLogin
+  onSuccess={credentialResponse => {
+    console.log(credentialResponse)
+    localStorage.setItem('user', JSON.stringify(credentialResponse.profileObj));
+    navigate('/home');
+  }}
+  onError={() => {
+    console.log('Login Failed')
+  }}
 
+  // clientId={clientId}
+  // buttonText="Login with Google"
+  // onSuccess={responseGoogle}
+  // onFailure={responseGoogle}
+  // cookiePolicy={'single_host_origin'}
+
+
+
+/>
+  </GoogleOAuthProvider>
+            </button>
+          </div>
+    
+       </div>
 
         <button 
          className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
         onClick={handleClick}>Registration</button>
         
       </div>
-    </div>
+  
   );
 };
 

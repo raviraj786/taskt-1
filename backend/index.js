@@ -2,9 +2,10 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require("cors");
 const bcrypt = require('bcrypt');
+const { OAuth2Client } = require("google-auth-library");
+const jwt = require("jsonwebtoken");
 
 const { connectMongoose,  User  } = require("./database.js") 
-
 
 const app = express();
 const port = "http://localhost:5000"; // Choose your desired port
@@ -14,8 +15,58 @@ app.use(cors());
 
 
 
+
+
 connectMongoose();
 User()
+
+
+
+
+// *  This function is used verify a google account
+
+const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
+const client = new OAuth2Client(GOOGLE_CLIENT_ID);
+
+async function verifyGoogleToken(token) {
+ try {
+   const ticket = await client.verifyIdToken({
+     idToken: token,
+     audience: GOOGLE_CLIENT_ID,
+   });
+   return { payload: ticket.getPayload() };
+ } catch (error) {
+   return { error: "Invalid user detected. Please try again" };
+ }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+app.use(
+  cors({
+    origin: ["http://localhost:3000"],
+    methods: "GET,POST,PUT,DELETE,OPTIONS",
+  })
+);
+
+
 
 
 

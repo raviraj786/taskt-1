@@ -10,6 +10,8 @@ exports.connectMongoose = () => {
 
 
 
+
+
 const userSchema = new mongoose.Schema({
     name: String,
     businessName : String,
@@ -17,5 +19,27 @@ const userSchema = new mongoose.Schema({
     email : String,
     password: String
   })
+
+
+
+  const categoryschema = new mongoose.Schema({
+    name: String,
+    desc: String,
+
+  })
+
+
+
+
+
+
+
+
+
+
+
+
+
+  exports.Category = mongoose.model("Category",categoryschema); 
   
   exports.User = mongoose.model("User", userSchema);
